@@ -20,7 +20,7 @@ var {
 
 var BeerList = React.createClass({
   componentWillMount: function() {
-    var beerListRef = this.state.beerListRef;
+    var beerListRef = new Firebase(`https://fiery-fire-7334.firebaseio.com/${this.props.uid}`);
     var beerList;
     beerListRef.on('value', (snapshot)=>{
       beerList = snapshot.val();
@@ -35,7 +35,13 @@ var BeerList = React.createClass({
         this.setState({
           dataSource: ds.cloneWithRows(beerListArray),
           beerList: beerList
-        })
+        });
+      } else {
+        var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+        this.setState({
+          dataSource: ds.cloneWithRows([]),
+          beerList: {}
+        });
       }
     });
   },
@@ -50,18 +56,10 @@ var BeerList = React.createClass({
     });
   },
 
-  componentWillUnmount: function(){
-    var beerListRef = this.state.beerListRef;
-    beerListRef.off('value');
-  },
-
   getInitialState: function() {
-    var beerListRef = new Firebase(`https://fiery-fire-7334.firebaseio.com/${this.props.uid}`);
-
     var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     return {
-      dataSource: ds.cloneWithRows([]),
-      beerListRef: beerListRef
+      dataSource: ds.cloneWithRows([])
     };
   },
 
@@ -73,6 +71,7 @@ var BeerList = React.createClass({
           name: "BeerDetail",
           component: BeerDetail,
           beer: beer,
+          beerList: this.state.beerList,
           uid: this.props.uid
         });
       }
@@ -97,7 +96,7 @@ var BeerList = React.createClass({
         <ListView
           dataSource={this.state.dataSource}
           renderRow={(rowData) => <BeerRow beer={rowData} onPress={this._onPress} />} />
-        <TouchableHighlight onPress={() => {this.props.navigator.push({name: 'Search Page', component: SearchPage, uid: this.props.uid})}} style={styles.fab}>
+        <TouchableHighlight onPress={() => {this.props.navigator.push({name: 'Search Page', component: SearchPage, uid: this.props.uid, beerList: this.state.beerList})}} style={styles.fab}>
           <Text style={styles.fabText}>+</Text>
         </TouchableHighlight>
       </View>

@@ -83,6 +83,7 @@ var SearchPage = React.createClass({
           name: "BeerDetail",
           component: BeerDetail,
           beer: beer,
+          beerList: this.props.beerList,
           uid: this.props.uid
         });
       }

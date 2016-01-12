@@ -24,7 +24,7 @@ var BrewRepoAndroid = React.createClass({
         }}
         renderScene={(route, navigator) => {
           if(route.component){
-            return React.createElement(route.component, { navigator, beer: route.beer, uid: route.uid })
+            return React.createElement(route.component, { navigator, beer: route.beer, beerList: route.beerList, uid: route.uid })
           }
         }} />
     );

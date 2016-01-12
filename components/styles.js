@@ -45,7 +45,7 @@ let styles = StyleSheet.create({
   },
   separator: {
     height: 1,
-    backgroundColor: '#dddddd'
+    backgroundColor: '#E6BB70'
   },
   listItem: {
     marginRight: 5,
@@ -86,8 +86,13 @@ let styles = StyleSheet.create({
     color: 'white',
     alignSelf: 'center'
   },
+  heroLabelContainer: {
+    marginBottom: 35,
+    marginTop: -10
+  },
   heroLabel: {
-    flex: 1
+    flex: 1,
+    height: 200
   },
   beerTitle: {
     fontSize: 20,
@@ -98,6 +103,23 @@ let styles = StyleSheet.create({
     padding: 10,
     margin: 5,
     elevation: 1
+  },
+  beerCount: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    backgroundColor: '#E6BB70',
+    position: 'absolute',
+    bottom: -30,
+    right: 10,
+    justifyContent: 'center',
+    elevation: 4
+  },
+  beerCountText: {
+    color: 'white'
+  },
+  textLabel: {
+    fontWeight: 'bold'
   }
 });
 

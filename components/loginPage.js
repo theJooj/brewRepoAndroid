@@ -31,11 +31,15 @@ var LoginPage = React.createClass({
       //if token exists, use it to log in and return the uid
       if(token){
         beerListRef.authWithCustomToken(token, function(error, authData){
-          self.props.navigator.replace({
-            name: 'Beer List',
-            component: BeerList,
-            uid: authData.uid
-          });
+          if(error){
+            console.log("Login failed: ", error);
+          } else {
+            self.props.navigator.replace({
+              name: 'Beer List',
+              component: BeerList,
+              uid: authData.uid
+            });
+          }
         });
       }
     });
