@@ -29,7 +29,7 @@ var HeaderBar = React.createClass({
         style={styles.toolbar}
         actions={[
           {title: 'Log Out', show: 'never'},
-          {title: this.props.filterGuest ? 'Hide Beers' : 'Show All'}
+          {title: this.props.filterGuest ? 'Show All' : 'Hide Beers'}
         ]}
         onActionSelected={this.onActionSelected} />
     )
@@ -52,9 +52,17 @@ var BeerList = React.createClass({
       if(beerList){
         var beerKeys = Object.keys(beerList);
         var beerListArray = [];
-        beerKeys.map((beer)=>{
-          beerListArray.push(beerList[beer]);
-        });
+        if(this.state.filterGuest){
+          beerKeys.map((beer)=>{
+            if(beerList[beer].guest){
+              beerListArray.push(beerList[beer]);
+            }
+          });
+        } else {
+          beerKeys.map((beer)=>{
+            beerListArray.push(beerList[beer]);
+          });
+        }
 
         var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.setState({
@@ -85,7 +93,7 @@ var BeerList = React.createClass({
     var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     return {
       dataSource: ds.cloneWithRows([]),
-      filterGuest: true
+      filterGuest: false
     };
   },
 
@@ -114,12 +122,12 @@ var BeerList = React.createClass({
   },
 
   _handleFilterChange: function(){
+    var filterGuest = !this.state.filterGuest;
     var beerList = this.state.beerList;
     var beerKeys = Object.keys(beerList);
     var beerListArray = [];
-    if(this.state.filterGuest){
+    if(filterGuest){
       beerKeys.map((beer)=>{
-        console.log(beerList[beer].guest);
         if(beerList[beer].guest){
           beerListArray.push(beerList[beer]);
         }
@@ -134,7 +142,7 @@ var BeerList = React.createClass({
     this.setState({
       dataSource: ds.cloneWithRows(beerListArray),
       beerList: beerList,
-      filterGuest: !this.state.filterGuest
+      filterGuest: filterGuest
     });
   },
 

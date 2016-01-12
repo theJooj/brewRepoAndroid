@@ -11,8 +11,9 @@ let styles = StyleSheet.create({
     height: 60,
     padding: 10,
     backgroundColor: '#9E2A1B',
-    justifyContent: 'center',
-    marginBottom: 10
+    justifyContent: 'space-between',
+    marginBottom: 10,
+    flexDirection: 'row'
   },
   headerBarText: {
     color: 'white',
@@ -101,7 +102,8 @@ let styles = StyleSheet.create({
     backgroundColor: 'white',
     padding: 10,
     margin: 5,
-    elevation: 1
+    elevation: 1,
+    flex: 1
   },
   beerCount: {
     width: 50,
@@ -127,6 +129,19 @@ let styles = StyleSheet.create({
     justifyContent: 'center',
     elevation: 4,
     marginBottom: 10
+  },
+  switchContainer: {
+    backgroundColor: 'white',
+    padding: 10,
+    margin: 5,
+    elevation: 1,
+    flex: 1,
+    flexDirection: 'row'
+  },
+  switch: {
+    marginTop: -3,
+    marginLeft: 10,
+    width: 50
   }
 });
 

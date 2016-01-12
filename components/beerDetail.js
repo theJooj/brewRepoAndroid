@@ -10,6 +10,7 @@ var {
   View,
   ScrollView,
   TouchableHighlight,
+  Switch,
   Image
 } = React;
 
@@ -18,7 +19,8 @@ var BeerDetail = React.createClass({
   getInitialState: function() {
     return {
       beerCount: this.props.beer.count,
-      beerList: this.props.beerList
+      beerList: this.props.beerList,
+      guest: this.props.beer.guest
     };
   },
 
@@ -108,13 +110,35 @@ var BeerDetail = React.createClass({
     // }
   },
 
+  _handleGuestToggle: function(){
+    var toggle = !this.state.guest;
+    var beerList = this.state.beerList;
+    var beerKeys = Object.keys(beerList);
+    var beerListArray = [];
+    var beerExists = false;
+    var beerId, targetBeer;
+    beerKeys.map((beer)=>{
+      beerListArray.push(beerList[beer]);
+    });
+    for(var x in beerListArray){
+      if(beerListArray[x].name === this.props.beer.name){
+        beerExists = true;
+        targetBeer = beerListArray[x];
+        beerId = beerKeys[x];
+      }
+    }
+    beerListRef.child(this.props.uid).child(beerId).update({guest: toggle});
+    this.setState({guest: toggle});
+  },
+
   render: function(){
     let removeButton = this.state.beerCount ? <TouchableHighlight onPress={this._handleRemove} style={styles.button}><Text style={styles.buttonText}>Remove Beer</Text></TouchableHighlight> : null;
     let beerLabel = this.props.beer.hasOwnProperty('labels') ? this.props.beer.labels.large : 'http://discovermagazine.com/~/media/Images/Issues/2013/June/beer.jpg';
     let count = this.state.beerCount ? <View style={styles.beerCount}><Text style={styles.fabText}>{this.state.beerCount}</Text></View> : null;
-    let dateAdded = this.props.beer.hasOwnProperty('dateAdded') ? <View style={styles.textContainer}><Text>Added On: {this.props.beer.dateAdded}</Text></View> : null;
     let abv = this.props.beer.hasOwnProperty('abv') ? <Text><Text style={styles.textLabel}>ABV:</Text> {this.props.beer.abv}%</Text> : null;
     let glassware = this.props.beer.hasOwnProperty('glass') ? <Text><Text style={styles.textLabel}>Glassware:</Text> {this.props.beer.glass.name}</Text> : null;
+    let dateAdded = this.props.beer.hasOwnProperty('dateAdded') ? <View style={styles.textContainer}><Text><Text style={styles.textLabel}>Added On:</Text> {this.props.beer.dateAdded}</Text></View> : null;
+    let toggleGuest = this.props.beer.hasOwnProperty('guest') ? <View style={styles.switchContainer}><Text style={styles.textLabel}>Guest:</Text><Switch style={styles.switch} onValueChange={this._handleGuestToggle} value={this.state.guest} /></View> : null;
     return (
       <ScrollView style={styles.container}>
         <View style={styles.headerBar}>
@@ -131,6 +155,7 @@ var BeerDetail = React.createClass({
           {glassware}
         </View>
         {dateAdded}
+        {toggleGuest}
         <View style={styles.textContainer}>
           <Text style={styles.description}>{this.props.beer.description}</Text>
         </View>
