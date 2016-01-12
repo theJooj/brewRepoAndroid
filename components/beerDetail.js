@@ -65,6 +65,7 @@ var BeerDetail = React.createClass({
       var month = dateAdded.getMonth() + 1;
       var year = dateAdded.getFullYear();
       newBeer.dateAdded = `${month}/${day}/${year}`;
+      newBeer.guest = true;
       beerListRef.child(this.props.uid).push(newBeer);
     }
     this.setState({beerCount: this.state.beerCount + 1});

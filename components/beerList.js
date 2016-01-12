@@ -27,13 +27,18 @@ var HeaderBar = React.createClass({
         titleColor='white'
         subtitleColor='white'
         style={styles.toolbar}
-        actions={[{title: 'Log Out', show: 'never'}]}
+        actions={[
+          {title: 'Log Out', show: 'never'},
+          {title: this.props.filterGuest ? 'Hide Beers' : 'Show All'}
+        ]}
         onActionSelected={this.onActionSelected} />
     )
   },
   onActionSelected: function(position) {
     if (position === 0) { // index of 'Log Out'
       this.props.logout();
+    } else if (position === 1) {
+      this.props.changeFilter();
     }
   }
 });
@@ -79,7 +84,8 @@ var BeerList = React.createClass({
   getInitialState: function() {
     var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     return {
-      dataSource: ds.cloneWithRows([])
+      dataSource: ds.cloneWithRows([]),
+      filterGuest: true
     };
   },
 
@@ -107,10 +113,35 @@ var BeerList = React.createClass({
     }]);
   },
 
+  _handleFilterChange: function(){
+    var beerList = this.state.beerList;
+    var beerKeys = Object.keys(beerList);
+    var beerListArray = [];
+    if(this.state.filterGuest){
+      beerKeys.map((beer)=>{
+        console.log(beerList[beer].guest);
+        if(beerList[beer].guest){
+          beerListArray.push(beerList[beer]);
+        }
+      });
+    } else {
+      beerKeys.map((beer)=>{
+        beerListArray.push(beerList[beer]);
+      });
+    }
+
+    var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+    this.setState({
+      dataSource: ds.cloneWithRows(beerListArray),
+      beerList: beerList,
+      filterGuest: !this.state.filterGuest
+    });
+  },
+
   render: function() {
     return (
       <View style={styles.container}>
-        <HeaderBar logout={this._handleLogout} />
+        <HeaderBar logout={this._handleLogout} filterGuest={this.state.filterGuest} changeFilter={this._handleFilterChange} />
         <ListView
           dataSource={this.state.dataSource}
           renderRow={(rowData) => <BeerRow beer={rowData} onPress={this._onPress} />} />
