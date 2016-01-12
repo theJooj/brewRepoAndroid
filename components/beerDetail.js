@@ -40,7 +40,6 @@ var BeerDetail = React.createClass({
     //if it is, just add one to the count and update
     //if not, set the count to 1 and push to the list
     var beerList = this.state.beerList;
-    console.log(beerList);
     var beerKeys = Object.keys(beerList);
     var beerListArray = [];
     var beerExists = false;
@@ -112,7 +111,9 @@ var BeerDetail = React.createClass({
     let removeButton = this.state.beerCount ? <TouchableHighlight onPress={this._handleRemove} style={styles.button}><Text style={styles.buttonText}>Remove Beer</Text></TouchableHighlight> : null;
     let beerLabel = this.props.beer.hasOwnProperty('labels') ? this.props.beer.labels.large : 'http://discovermagazine.com/~/media/Images/Issues/2013/June/beer.jpg';
     let count = this.state.beerCount ? <View style={styles.beerCount}><Text style={styles.fabText}>{this.state.beerCount}</Text></View> : null;
-    let dateAdded = this.props.beer.dateAdded ? <View style={styles.textContainer}><Text>Added On: {this.props.beer.dateAdded}</Text></View> : null;
+    let dateAdded = this.props.beer.hasOwnProperty('dateAdded') ? <View style={styles.textContainer}><Text>Added On: {this.props.beer.dateAdded}</Text></View> : null;
+    let abv = this.props.beer.hasOwnProperty('abv') ? <Text><Text style={styles.textLabel}>ABV:</Text> {this.props.beer.abv}%</Text> : null;
+    let glassware = this.props.beer.hasOwnProperty('glass') ? <Text><Text style={styles.textLabel}>Glassware:</Text> {this.props.beer.glass.name}</Text> : null;
     return (
       <ScrollView style={styles.container}>
         <View style={styles.headerBar}>
@@ -125,8 +126,8 @@ var BeerDetail = React.createClass({
         </View>
         <View style={styles.textContainer}>
           <Text><Text style={styles.textLabel}>Style:</Text> {this.props.beer.style.shortName}</Text>
-          <Text><Text style={styles.textLabel}>ABV:</Text> {this.props.beer.abv}%</Text>
-          <Text><Text style={styles.textLabel}>Glassware:</Text> {this.props.beer.glass.name}</Text>
+          {abv}
+          {glassware}
         </View>
         {dateAdded}
         <View style={styles.textContainer}>

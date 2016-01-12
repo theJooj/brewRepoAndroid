@@ -11,6 +11,8 @@ var styles = require('./components/styles');
 
 var {
   AppRegistry,
+  View,
+  Text,
   Navigator
 } = React;
 

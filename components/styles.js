@@ -12,7 +12,6 @@ let styles = StyleSheet.create({
     padding: 10,
     backgroundColor: '#9E2A1B',
     justifyContent: 'center',
-    elevation: 4,
     marginBottom: 10
   },
   headerBarText: {
@@ -44,7 +43,7 @@ let styles = StyleSheet.create({
     backgroundColor: '#FFF1D7'
   },
   separator: {
-    height: 1,
+    height: 10,
     backgroundColor: '#E6BB70'
   },
   listItem: {
@@ -105,12 +104,12 @@ let styles = StyleSheet.create({
     elevation: 1
   },
   beerCount: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
+    width: 50,
+    height: 50,
+    borderRadius: 25,
     backgroundColor: '#E6BB70',
     position: 'absolute',
-    bottom: -30,
+    bottom: -20,
     right: 10,
     justifyContent: 'center',
     elevation: 4
@@ -120,6 +119,14 @@ let styles = StyleSheet.create({
   },
   textLabel: {
     fontWeight: 'bold'
+  },
+  toolbar: {
+    height: 60,
+    padding: 10,
+    backgroundColor: '#9E2A1B',
+    justifyContent: 'center',
+    elevation: 4,
+    marginBottom: 10
   }
 });
 

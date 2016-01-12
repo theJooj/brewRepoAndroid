@@ -15,8 +15,28 @@ var {
   ListView,
   TouchableHighlight,
   BackAndroid,
+  ToolbarAndroid,
   Image
 } = React;
+
+var HeaderBar = React.createClass({
+  render: function() {
+    return (
+      <ToolbarAndroid
+        title='BrewRepo'
+        titleColor='white'
+        subtitleColor='white'
+        style={styles.toolbar}
+        actions={[{title: 'Log Out', show: 'never'}]}
+        onActionSelected={this.onActionSelected} />
+    )
+  },
+  onActionSelected: function(position) {
+    if (position === 0) { // index of 'Log Out'
+      this.props.logout();
+    }
+  }
+});
 
 var BeerList = React.createClass({
   componentWillMount: function() {
@@ -90,9 +110,7 @@ var BeerList = React.createClass({
   render: function() {
     return (
       <View style={styles.container}>
-        <View style={styles.headerBar}>
-          <Text style={styles.headerBarText}>BrewRepo</Text>
-        </View>
+        <HeaderBar logout={this._handleLogout} />
         <ListView
           dataSource={this.state.dataSource}
           renderRow={(rowData) => <BeerRow beer={rowData} onPress={this._onPress} />} />

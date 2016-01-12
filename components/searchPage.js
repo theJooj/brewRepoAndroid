@@ -79,13 +79,38 @@ var SearchPage = React.createClass({
     return (
       (e) => {
         e.preventDefault;
-        this.props.navigator.push({
-          name: "BeerDetail",
-          component: BeerDetail,
-          beer: beer,
-          beerList: this.props.beerList,
-          uid: this.props.uid
+        var beerList = this.props.beerList;
+        var beerKeys = Object.keys(beerList);
+        var beerListArray = [];
+        var beerExists = false;
+        var beerId, targetBeer;
+        beerKeys.map((beer)=>{
+          beerListArray.push(beerList[beer]);
         });
+        for(var x in beerListArray){
+          if(beerListArray[x].name === beer.name){
+            beerExists = true;
+            targetBeer = beerListArray[x];
+            beerId = beerKeys[x];
+          }
+        }
+        if(beerExists){
+          this.props.navigator.push({
+            name: "BeerDetail",
+            component: BeerDetail,
+            beer: targetBeer,
+            beerList: this.props.beerList,
+            uid: this.props.uid
+          });
+        } else {
+          this.props.navigator.push({
+            name: "BeerDetail",
+            component: BeerDetail,
+            beer: beer,
+            beerList: this.props.beerList,
+            uid: this.props.uid
+          });
+        }
       }
     );
   },
