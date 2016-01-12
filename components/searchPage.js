@@ -2,10 +2,11 @@
 
 var React = require('react-native');
 var BeerDetail = require('./beerDetail');
+var BeerRow = require('./beerRow');
+var styles = require('./styles');
 var config = require('../config');
 
 var {
-  StyleSheet,
   Text,
   TextInput,
   View,
@@ -15,21 +16,7 @@ var {
 } = React;
 
 const apiKey = config.brewerydb.apiKey;
-const searchUrl = 'http://api.brewerydb.com/v2/search?q='
-
-var BeerRow = React.createClass({
-  render: function(){
-    var label = this.props.beer.hasOwnProperty('labels') ? this.props.beer.labels.medium : null;
-    return (
-      <TouchableHighlight onPress={this.props.onPress(this.props.beer)}>
-        <View>
-          <Image source={{uri: label}} style={{width: 80, height: 80}} />
-          <Text>{this.props.beer.name}</Text>
-        </View>
-      </TouchableHighlight>
-    );
-  }
-});
+const searchUrl = 'http://api.brewerydb.com/v2/search?q=';
 
 var SearchInput = React.createClass({
   getInitialState: function() {
@@ -49,6 +36,7 @@ var SearchInput = React.createClass({
       <View>
         <TextInput
           ref="searchInput"
+          underlineColorAndroid="#BF2F13"
           onChange={this._handleTextChange}
           value={this.state.searchTerm} />
         <TouchableHighlight style={styles.button} onPress={
@@ -74,7 +62,7 @@ var SearchPage = React.createClass({
 
   _beerSearch: function(searchTerm){
     var self = this;
-    return fetch(`http://api.brewerydb.com/v2/search?q=${searchTerm}&type=beer&key=${apiKey}`)
+    return fetch(`http://api.brewerydb.com/v2/search?q=${searchTerm}&type=beer&withBreweries=Y&key=${apiKey}`)
       .then(function(res){
         return res.json();
       }).then(function(json){
@@ -110,29 +98,6 @@ var SearchPage = React.createClass({
           renderRow={(rowData) => <BeerRow beer={rowData} onPress={this._onPress} />} />
       </View>
     );
-  }
-});
-
-var styles = StyleSheet.create({
-  buttonText: {
-    fontSize: 18,
-    color: 'white',
-    alignSelf: 'center'
-  },
-  button: {
-    height: 36,
-    flex: 1,
-    flexDirection: 'row',
-    backgroundColor: '#48BBEC',
-    borderColor: '#48BBEC',
-    borderWidth: 1,
-    borderRadius: 8,
-    marginBottom: 10,
-    alignSelf: 'stretch',
-    justifyContent: 'center'
-  },
-  container: {
-    flex: 1
   }
 });
 

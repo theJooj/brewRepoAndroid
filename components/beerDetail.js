@@ -3,9 +3,9 @@
 var React = require('react-native');
 var Firebase = require('firebase');
 var beerListRef = new Firebase('https://fiery-fire-7334.firebaseio.com');
+var styles = require('./styles');
 
 var {
-  StyleSheet,
   Text,
   View,
   TouchableHighlight,
@@ -64,6 +64,13 @@ var BeerDetail = React.createClass({
       beerListRef.child(this.props.uid).push(newBeer);
     }
     this.setState({beerCount: this.state.beerCount + 1});
+    var BeerList = require('./beerList');
+    this.props.navigator.popToTop();
+    // this.props.navigator.push({
+    //   name: 'BeerList',
+    //   component: BeerList,
+    //   uid: this.props.uid
+    // });
   },
 
   _handleRemove: function(){
@@ -97,36 +104,25 @@ var BeerDetail = React.createClass({
     let removeButton = this.state.beerCount ? <TouchableHighlight onPress={this._handleRemove} style={styles.button}><Text style={styles.buttonText}>Remove Beer</Text></TouchableHighlight> : null;
     let beerLabel = this.props.beer.hasOwnProperty('labels') ? this.props.beer.labels.large : 'http://discovermagazine.com/~/media/Images/Issues/2013/June/beer.jpg'
     return (
-      <View>
-        <Image source={{uri: beerLabel}} style={{width: 100, height: 100}} />
-        <Text>{this.props.beer.name}</Text>
-        <Text>{this.props.beer.description}</Text>
-        <TouchableHighlight onPress={this._handleAdd} style={styles.button}>
-          <Text style={styles.buttonText}>Add Beer</Text>
-        </TouchableHighlight>
-        {removeButton}
+      <View style={styles.container}>
+        <View style={styles.headerBar}>
+          <Text style={styles.headerBarText}>{this.props.beer.name}</Text>
+        </View>
+        <Image source={{uri: beerLabel}} style={styles.heroLabel} />
+        <View style={styles.textContainer}>
+          <Text>{this.props.beer.style.shortName}</Text>
+        </View>
+        <View style={styles.textContainer}>
+          <Text style={styles.description}>{this.props.beer.description}</Text>
+        </View>
+        <View style={styles.buttonRow}>
+          <TouchableHighlight onPress={this._handleAdd} style={styles.button}>
+            <Text style={styles.buttonText}>Add Beer</Text>
+          </TouchableHighlight>
+          {removeButton}
+        </View>
       </View>
     );
-  }
-});
-
-var styles = StyleSheet.create({
-  buttonText: {
-    fontSize: 18,
-    color: 'white',
-    alignSelf: 'center'
-  },
-  button: {
-    height: 36,
-    flex: 1,
-    flexDirection: 'row',
-    backgroundColor: '#48BBEC',
-    borderColor: '#48BBEC',
-    borderWidth: 1,
-    borderRadius: 8,
-    marginBottom: 10,
-    alignSelf: 'stretch',
-    justifyContent: 'center'
   }
 });
 

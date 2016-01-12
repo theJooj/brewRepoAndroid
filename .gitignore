@@ -34,3 +34,10 @@ node_modules/
 npm-debug.log
 
 config.js
+android/BrewRepoAndroid.iml
+android/app/app.iml
+android/app/my-release-key.keystore
+android/app/src/main/assets/
+android/app/src/main/gen/
+android/app/src/main/main.iml
+out/
