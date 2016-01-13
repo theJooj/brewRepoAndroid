@@ -8,16 +8,15 @@ var {
 
 let styles = StyleSheet.create({
   headerBar: {
-    height: 60,
-    padding: 10,
+    height: 70,
     backgroundColor: '#9E2A1B',
     justifyContent: 'space-between',
-    marginBottom: 10,
     flexDirection: 'row'
   },
   headerBarText: {
     color: 'white',
-    fontSize: 20
+    fontSize: 20,
+    alignSelf: 'center'
   },
   buttonRow: {
     flex: 1,
@@ -45,7 +44,7 @@ let styles = StyleSheet.create({
   },
   separator: {
     height: 10,
-    backgroundColor: '#E6BB70'
+    backgroundColor: '#9E2A1B'
   },
   listItem: {
     marginRight: 5,
@@ -109,7 +108,7 @@ let styles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 25,
-    backgroundColor: '#E6BB70',
+    backgroundColor: '#9E2A1B',
     position: 'absolute',
     bottom: -20,
     right: 10,

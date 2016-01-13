@@ -11,8 +11,21 @@ var {
   ScrollView,
   TouchableHighlight,
   Switch,
+  ToolbarAndroid,
   Image
 } = React;
+
+var HeaderBar = React.createClass({
+  render: function() {
+    return (
+      <ToolbarAndroid
+        title={this.props.beer.name}
+        titleColor='white'
+        subtitleColor='white'
+        style={styles.toolbar} />
+    )
+  }
+});
 
 var BeerDetail = React.createClass({
 
@@ -69,9 +82,9 @@ var BeerDetail = React.createClass({
       newBeer.dateAdded = `${month}/${day}/${year}`;
       newBeer.guest = true;
       beerListRef.child(this.props.uid).push(newBeer);
+      this.props.navigator.popToTop();
     }
     this.setState({beerCount: this.state.beerCount + 1});
-    this.props.navigator.popToTop();
   },
 
   _handleRemove: function(){
@@ -98,6 +111,7 @@ var BeerDetail = React.createClass({
     } else {
       beerListRef.child(this.props.uid).child(beerId).remove();
       this.setState({beerCount: 0});
+      this.props.navigator.popToTop();
     }
     // var beerCount = targetBeer.count;
     // if(beerCount - 1 > 0){
@@ -141,9 +155,7 @@ var BeerDetail = React.createClass({
     let toggleGuest = this.props.beer.hasOwnProperty('guest') ? <View style={styles.switchContainer}><Text style={styles.textLabel}>Guest:</Text><Switch style={styles.switch} onValueChange={this._handleGuestToggle} value={this.state.guest} /></View> : null;
     return (
       <ScrollView style={styles.container}>
-        <View style={styles.headerBar}>
-          <Text style={styles.headerBarText}>{this.props.beer.name}</Text>
-        </View>
+        <HeaderBar beer={this.props.beer} />
         <View style={styles.heroLabelContainer}>
           <Image source={{uri: beerLabel}} style={styles.heroLabel} />
           <View style={styles.separator} />

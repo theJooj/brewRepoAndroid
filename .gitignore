@@ -41,3 +41,4 @@ android/app/src/main/assets/
 android/app/src/main/gen/
 android/app/src/main/main.iml
 out/
+*.apk

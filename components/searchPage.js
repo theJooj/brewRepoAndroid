@@ -12,11 +12,23 @@ var {
   View,
   ListView,
   TouchableHighlight,
+  ToolbarAndroid,
   Image
 } = React;
 
 const apiKey = config.brewerydb.apiKey;
-const searchUrl = 'http://api.brewerydb.com/v2/search?q=';
+
+var HeaderBar = React.createClass({
+  render: function() {
+    return (
+      <ToolbarAndroid
+        title='Search'
+        titleColor='white'
+        subtitleColor='white'
+        style={styles.toolbar} />
+    )
+  }
+});
 
 var SearchInput = React.createClass({
   getInitialState: function() {
@@ -118,6 +130,7 @@ var SearchPage = React.createClass({
   render: function(){
     return (
       <View style={styles.container}>
+        <HeaderBar />
         <SearchInput handleSearch={this._beerSearch} />
         <ListView
           dataSource={this.state.dataSource}

@@ -14,6 +14,7 @@ var BeerRow = React.createClass({
   render: function(){
     var label = this.props.beer.hasOwnProperty('labels') ? this.props.beer.labels.medium : 'http://www.iconsplace.com/icons/preview/orange/beer-glass-256.png';
     var breweryName = this.props.beer.hasOwnProperty('breweries') ? <Text style={styles.rowText}>{this.props.beer.breweries[0].name}</Text> : null;
+    var beerName = this.props.beer.hasOwnProperty('style') ? <Text style={styles.rowText}>{this.props.beer.style.shortName}</Text> : null;
     return (
       <TouchableHighlight style={styles.listItem} onPress={this.props.onPress(this.props.beer)}>
         <View>
@@ -22,7 +23,7 @@ var BeerRow = React.createClass({
             <View>
               <Text style={styles.title}>{this.props.beer.name}</Text>
               {breweryName}
-              <Text style={styles.rowText}>{this.props.beer.style.shortName}</Text>
+              {beerName}
             </View>
           </View>
         </View>
