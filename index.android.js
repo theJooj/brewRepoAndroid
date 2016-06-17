@@ -22,11 +22,11 @@ var BrewRepoAndroid = React.createClass({
       <Navigator
         initialRoute={{name:'Login Page', component: LoginPage}}
         configureScene={() => {
-          return Navigator.SceneConfigs.HorizontalSwipeJump;
+          return ({...Navigator.SceneConfigs.HorizontalSwipeJump, gestures: {}});
         }}
         renderScene={(route, navigator) => {
           if(route.component){
-            return React.createElement(route.component, { navigator, beer: route.beer, beerList: route.beerList, uid: route.uid })
+            return React.createElement(route.component, { navigator, beer: route.beer, beerList: route.beerList, uid: route.uid, callback: route.callback })
           }
         }} />
     );

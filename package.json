@@ -9,6 +9,7 @@
     "brewerydb-node": "0.0.1",
     "firebase": "^2.3.2",
     "react-native": "^0.17.0",
+    "react-native-barcodescanner": "^0.1.4",
     "react-native-scrollable-tab-view": "^0.3.4",
     "react-native-simple-store": "^0.1.0"
   }

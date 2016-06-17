@@ -38,6 +38,15 @@ let styles = StyleSheet.create({
     alignSelf: 'stretch',
     justifyContent: 'center'
   },
+  textLinkContainer: {
+    flex: 1,
+    justifyContent: 'center'
+  },
+  textLink: {
+    color: '#BF2F13',
+    textDecorationLine: 'underline',
+    alignSelf: 'center',
+  },
   container: {
     flex: 1,
     backgroundColor: '#FFF1D7'
@@ -78,7 +87,7 @@ let styles = StyleSheet.create({
     bottom: 10,
     right: 10,
     justifyContent: 'center',
-    elevation: 4
+    elevation: 6
   },
   fabText: {
     fontSize: 30,
@@ -141,6 +150,9 @@ let styles = StyleSheet.create({
     marginTop: -3,
     marginLeft: 10,
     width: 50
+  },
+  noResults: {
+    padding: 10
   }
 });
 

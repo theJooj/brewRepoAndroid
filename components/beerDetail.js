@@ -146,7 +146,7 @@ var BeerDetail = React.createClass({
   },
 
   render: function(){
-    let removeButton = this.state.beerCount ? <TouchableHighlight onPress={this._handleRemove} style={styles.button}><Text style={styles.buttonText}>Remove Beer</Text></TouchableHighlight> : null;
+    let removeButton = this.state.beerCount ? <TouchableHighlight underlayColor='#9E2A1B' onPress={this._handleRemove} style={styles.button}><Text style={styles.buttonText}>Remove Beer</Text></TouchableHighlight> : null;
     let beerLabel = this.props.beer.hasOwnProperty('labels') ? this.props.beer.labels.large : 'http://discovermagazine.com/~/media/Images/Issues/2013/June/beer.jpg';
     let count = this.state.beerCount ? <View style={styles.beerCount}><Text style={styles.fabText}>{this.state.beerCount}</Text></View> : null;
     let abv = this.props.beer.hasOwnProperty('abv') ? <Text><Text style={styles.textLabel}>ABV:</Text> {this.props.beer.abv}%</Text> : null;
@@ -172,7 +172,7 @@ var BeerDetail = React.createClass({
           <Text style={styles.description}>{this.props.beer.description}</Text>
         </View>
         <View style={styles.buttonRow}>
-          <TouchableHighlight onPress={this._handleAdd} style={styles.button}>
+          <TouchableHighlight underlayColor='#9E2A1B' onPress={this._handleAdd} style={styles.button}>
             <Text style={styles.buttonText}>Add Beer</Text>
           </TouchableHighlight>
           {removeButton}

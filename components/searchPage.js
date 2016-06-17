@@ -3,6 +3,7 @@
 var React = require('react-native');
 var BeerDetail = require('./beerDetail');
 var BeerRow = require('./beerRow');
+var BarcodeScanner = require('./barcodeScanner');
 var styles = require('./styles');
 var config = require('../config');
 
@@ -51,13 +52,24 @@ var SearchInput = React.createClass({
           underlineColorAndroid="#BF2F13"
           onChange={this._handleTextChange}
           value={this.state.searchTerm} />
-        <TouchableHighlight style={styles.button} onPress={
+        <TouchableHighlight underlayColor='#9E2A1B' style={styles.button} onPress={
           (e)=>{e.preventDefault();
             this.refs.searchInput.blur();
             this.props.handleSearch(this.state.searchTerm);
           }
         }>
           <Text style={styles.buttonText}>Search</Text>
+        </TouchableHighlight>
+        <TouchableHighlight underlayColor='#9E2A1B' style={styles.button} onPress={
+          (e)=>{e.preventDefault();
+            this.props.navigator.push({
+              name: 'Barcode Scanner',
+              component: BarcodeScanner,
+              callback: this.props.handleUPC
+            })
+          }
+        }>
+          <Text style={styles.buttonText}>Search by Barcode</Text>
         </TouchableHighlight>
       </View>
     );
@@ -69,6 +81,8 @@ var SearchPage = React.createClass({
     var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     return {
       dataSource: ds.cloneWithRows([]),
+      hasSearched: false,
+      noResults: true
     };
   },
 
@@ -78,10 +92,43 @@ var SearchPage = React.createClass({
       .then(function(res){
         return res.json();
       }).then(function(json){
-        var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-        self.setState({
-          dataSource: ds.cloneWithRows(json.data)
-        })
+        if(json.totalResults){
+          var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+          self.setState({
+            dataSource: ds.cloneWithRows(json.data),
+            hasSearched: true,
+            noResults: false
+          });
+        } else {
+          self.setState({
+            hasSearched: true,
+            noResults: true
+          });
+        }
+      }).catch(function(err){
+        console.log(err);
+      });
+  },
+
+  _upcSearch: function(searchTerm){
+    var self = this;
+    return fetch(`http://api.brewerydb.com/v2/search/upc?code=${searchTerm}&withBreweries=Y&key=${apiKey}`)
+      .then(function(res){
+        return res.json();
+      }).then(function(json){
+        if(json.totalResults){
+          var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+          self.setState({
+            dataSource: ds.cloneWithRows(json.data),
+            hasSearched: true,
+            noResults: false
+          });
+        } else {
+          self.setState({
+            hasSearched: true,
+            noResults: true
+          });
+        }
       }).catch(function(err){
         console.log(err);
       });
@@ -128,13 +175,16 @@ var SearchPage = React.createClass({
   },
 
   render: function(){
+    if(this.state.hasSearched){
+      var searchResults = this.state.noResults ? <View style={styles.noResults}><Text>No results found.</Text></View> : <ListView dataSource={this.state.dataSource} renderRow={(rowData) => <BeerRow beer={rowData} onPress={this._onPress} />} />
+    } else {
+      var searchResults = null;
+    }
     return (
       <View style={styles.container}>
         <HeaderBar />
-        <SearchInput handleSearch={this._beerSearch} />
-        <ListView
-          dataSource={this.state.dataSource}
-          renderRow={(rowData) => <BeerRow beer={rowData} onPress={this._onPress} />} />
+        <SearchInput handleSearch={this._beerSearch} handleUPC={this._upcSearch} navigator={this.props.navigator} />
+        {searchResults}
       </View>
     );
   }

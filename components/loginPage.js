@@ -134,11 +134,11 @@ var LoginPage = React.createClass({
           secureTextEntry={true}
           onChange={this._handlePasswordChange}
           value={this.state.password} />
-        <TouchableHighlight style={styles.button} onPress={this._handleCreateAccount}>
-          <Text style={styles.buttonText}>Create a New Account</Text>
-        </TouchableHighlight>
-        <TouchableHighlight style={styles.button} onPress={this._handleLogin}>
+        <TouchableHighlight underlayColor='#9E2A1B' style={styles.button} onPress={this._handleLogin}>
           <Text style={styles.buttonText}>Log In</Text>
+        </TouchableHighlight>
+        <TouchableHighlight style={styles.textLinkContainer} onPress={this._handleCreateAccount}>
+          <Text style={styles.textLink}>Create a New Account</Text>
         </TouchableHighlight>
       </View>
     );

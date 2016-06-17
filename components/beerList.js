@@ -67,13 +67,15 @@ var BeerList = React.createClass({
         var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.setState({
           dataSource: ds.cloneWithRows(beerListArray),
-          beerList: beerList
+          beerList: beerList,
+          loading: false
         });
       } else {
         var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.setState({
           dataSource: ds.cloneWithRows([]),
-          beerList: {}
+          beerList: {},
+          loading: false
         });
       }
     });
@@ -93,6 +95,8 @@ var BeerList = React.createClass({
     var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     return {
       dataSource: ds.cloneWithRows([]),
+      beerList: {},
+      loading: true,
       filterGuest: false
     };
   },
@@ -147,13 +151,16 @@ var BeerList = React.createClass({
   },
 
   render: function() {
+    if(this.state.loading) {
+      var mainList = null;
+    } else {
+      var mainList = Object.keys(this.state.beerList).length ? <ListView dataSource={this.state.dataSource} renderRow={(rowData) => <BeerRow beer={rowData} onPress={this._onPress} />} /> : <View style={styles.noResults}><Text>There are currently no beers in your inventory. Click the Add button at the bottom to add some now.</Text></View>
+    }
     return (
       <View style={styles.container}>
         <HeaderBar logout={this._handleLogout} filterGuest={this.state.filterGuest} changeFilter={this._handleFilterChange} />
-        <ListView
-          dataSource={this.state.dataSource}
-          renderRow={(rowData) => <BeerRow beer={rowData} onPress={this._onPress} />} />
-        <TouchableHighlight onPress={() => {this.props.navigator.push({name: 'Search Page', component: SearchPage, uid: this.props.uid, beerList: this.state.beerList})}} style={styles.fab}>
+        {mainList}
+        <TouchableHighlight underlayColor='#9E2A1B' onPress={() => {this.props.navigator.push({name: 'Search Page', component: SearchPage, uid: this.props.uid, beerList: this.state.beerList})}} style={styles.fab}>
           <Text style={styles.fabText}>+</Text>
         </TouchableHighlight>
       </View>

@@ -16,7 +16,7 @@ var BeerRow = React.createClass({
     var breweryName = this.props.beer.hasOwnProperty('breweries') ? <Text style={styles.rowText}>{this.props.beer.breweries[0].name}</Text> : null;
     var beerName = this.props.beer.hasOwnProperty('style') ? <Text style={styles.rowText}>{this.props.beer.style.shortName}</Text> : null;
     return (
-      <TouchableHighlight style={styles.listItem} onPress={this.props.onPress(this.props.beer)}>
+      <TouchableHighlight underlayColor='#BF2F13' style={styles.listItem} onPress={this.props.onPress(this.props.beer)}>
         <View>
           <View style={styles.rowContainer}>
             <Image source={{uri: label}} style={styles.thumb} />
